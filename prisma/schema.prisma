@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Users Table
+model User {
+  user_id Int     @id @default(autoincrement())
+  name    String
+  email   String
+  address String  @unique
+  layout  Layout?
+
+  @@index([address], name: "address_index") // Indexing on address column
+}
+
+// Layout Table
+model Layout {
+  layout_id   Int            @id @default(autoincrement())
+  user_id     Int            @unique
+  layout_name String
+  user        User           @relation(fields: [user_id], references: [user_id])
+  widgets     LayoutWidget[]
+
+  @@index([user_id], name: "user_id_index") // Indexing on user_id
+}
+
+// Widget Table
+model Widget {
+  widget_id          Int            @id @default(autoincrement())
+  widget_name        String
+  widget_description String?
+  layouts            LayoutWidget[]
+  widget_config      Json? // Widget configuration
+
+  @@index([widget_name], name: "widget_name_index") // Indexing on widget_name
+}
+
+// Layout_Widgets Association Table
+model LayoutWidget {
+  layout_id Int
+  widget_id Int
+  layout    Layout @relation(fields: [layout_id], references: [layout_id])
+  widget    Widget @relation(fields: [widget_id], references: [widget_id])
+
+  @@id([layout_id, widget_id])
+  @@index([layout_id], name: "layout_id_index") // Indexing on layout_id
+  @@index([widget_id], name: "widget_id_index") // Indexing on widget_id
+}
