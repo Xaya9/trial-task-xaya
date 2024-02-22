@@ -20,7 +20,7 @@ export default function Home() {
     if (address) {
       // Fetch user details based on the address
       axios
-        .post("/api/profile", { address })
+        .get(`/api/profile/${address}`)
         .then((response) => {
           const userData = response.data;
           setUser(userData);

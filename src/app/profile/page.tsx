@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
@@ -37,6 +37,27 @@ export default function Profile() {
   const { toast } = useToast();
   const { address } = useAccount();
   const router = useRouter();
+
+  useEffect(() => {
+    if (address) {
+      // Fetch user details based on the address
+      axios
+        .get(`/api/profile/${address}`)
+        .then((response) => {
+          const userData = response.data;
+          form.setValue("name", userData.name);
+          form.setValue("email", userData.email);
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 404) {
+            form.setValue("name", "");
+            form.setValue("email", "");
+          } else {
+            console.error("Error fetching user details:", error);
+          }
+        });
+    }
+  }, [address]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
