@@ -51,6 +51,7 @@ export default function Home() {
               {user ? (
                 <div className="p-3 text-center">
                   <h1>Hello {user?.name} </h1>
+                  <h1> Welcome to your DashBoard! </h1>
                 </div>
               ) : (
                 <h1 className="text-center">
