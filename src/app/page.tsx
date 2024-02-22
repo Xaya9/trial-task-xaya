@@ -61,7 +61,7 @@ export default function Home() {
             </>
           ) : (
             <h1 className="text-center">
-              Kindly connect your wallet to access your Dashboard!
+              Kindly connect your wallet in profile to access your Dashboard!
             </h1>
           )}
         </div>
