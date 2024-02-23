@@ -80,6 +80,14 @@ export function LayoutDetails({ user_id }: LayoutDetailsProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [layoutId, setLayoutId] = useState(0);
 
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: "",
+      items: [],
+    },
+  });
+
   useEffect(() => {
     if (user_id) {
       axios
@@ -119,15 +127,7 @@ export function LayoutDetails({ user_id }: LayoutDetailsProps) {
           }
         });
     }
-  }, [user_id]);
-
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      name: "",
-      items: [],
-    },
-  });
+  }, [user_id, form]);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true);
@@ -184,7 +184,7 @@ export function LayoutDetails({ user_id }: LayoutDetailsProps) {
         <DialogHeader>
           <DialogTitle>Layout</DialogTitle>
           <DialogDescription>
-            Make changes to your Layout here. Click save when you're done.
+            Make changes to your Layout here. Click save when you are done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 ">
