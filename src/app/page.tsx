@@ -4,6 +4,7 @@ import { Topbar } from "@/app/components/Topbar";
 import { useAccount } from "wagmi";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { LayoutDetails } from "./components/LayoutDetails";
 
 interface User {
   user_id: number;
@@ -40,7 +41,10 @@ export default function Home() {
       {/* Main Content */}
       <main className="flex-1">
         {/* Top Bar */}
-        <header className="bg-gray-900 text-white py-4 px-8">
+        <header className="bg-gray-900 text-black py-4 px-8 flex justify-end gap-3">
+          {user && 
+          <LayoutDetails user_id={user.user_id} />
+          }
           <Topbar />
         </header>
 
