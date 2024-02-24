@@ -29,6 +29,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+// import type { RootState }  from "@/app/store";
+import { useDispatch } from 'react-redux'
+import { changeInItems } from "@/lib/features/item/itemSlice";
 
 interface LayoutDetailsProps {
   user_id: number;
@@ -79,6 +82,8 @@ const FormSchema = z.object({
 export function LayoutDetails({ user_id }: LayoutDetailsProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [layoutId, setLayoutId] = useState(0);
+  // const allItems = useSelector((state: RootState) => state.item.items)
+  const dispatch = useDispatch()
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -106,8 +111,8 @@ export function LayoutDetails({ user_id }: LayoutDetailsProps) {
                 widget.widget_id.toString()
               );
               const widgetIdsAsString = widgetIds.map((id) => id.toString());
-
               form.setValue("items", widgetIdsAsString);
+              dispatch(changeInItems(widgetIdsAsString))
             })
             .catch((widgetError) => {
               if (widgetError.response && widgetError.response.status === 404) {

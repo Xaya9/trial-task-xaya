@@ -4,12 +4,8 @@ import { prisma } from "@/lib/prisma";
 export async function POST(request: any) {
   let data;
   try {
-    console.log("Attempting to parse request body...");
     data = await request.json();
-    console.log("Request body parsed successfully:", data);
   } catch (error) {
-    console.log(`Incoming request method: ${request.method}`);
-    console.log(`Incoming request headers: ${JSON.stringify(request.headers)}`);
     if (request.headers["content-type"] !== "application/json") {
       return new NextResponse("Unsupported Media Type", { status: 415 });
     }
