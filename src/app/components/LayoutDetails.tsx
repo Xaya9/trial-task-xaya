@@ -35,6 +35,7 @@ import { changeInItems } from "@/lib/features/item/itemSlice";
 
 interface LayoutDetailsProps {
   user_id: number;
+  onLayoutUpdate: () => void;
 }
 
 interface WidgetData {
@@ -79,7 +80,7 @@ const FormSchema = z.object({
   }),
 });
 
-export function LayoutDetails({ user_id }: LayoutDetailsProps) {
+export function LayoutDetails({ user_id, onLayoutUpdate }: LayoutDetailsProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [layoutId, setLayoutId] = useState(0);
   // const allItems = useSelector((state: RootState) => state.item.items)
@@ -176,6 +177,7 @@ export function LayoutDetails({ user_id }: LayoutDetailsProps) {
         title: "Error submitting layout",
       });
     } finally {
+      onLayoutUpdate();
       setIsSubmitting(false);
     }
   }

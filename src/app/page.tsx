@@ -26,6 +26,7 @@ export default function Home() {
   const { isConnected, address } = useAccount();
   const [user, setUser] = useState<User | null>(null);
   const allItems = useSelector((state: RootState) => state.item.items);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     if (address) {
@@ -44,7 +45,17 @@ export default function Home() {
           }
         });
     }
-  }, [address]);
+  }, [address, allItems]);
+
+  useEffect(() => {
+    if (reload) {
+      window.location.reload();
+    }
+  }, [reload]);
+
+  const handleLayoutUpdate = () => {
+    setReload(true);
+  };
 
   const chunkedItems = useMemo(() => {
     const chunks = [];
@@ -60,7 +71,7 @@ export default function Home() {
       <main className="flex-1">
         {/* Top Bar */}
         <header className="bg-gray-900 text-black py-4 px-8 flex justify-end gap-3">
-          {user && <LayoutDetails user_id={user.user_id} />}
+          {user && <LayoutDetails user_id={user.user_id} onLayoutUpdate={handleLayoutUpdate} />}
           <Topbar />
         </header>
 
