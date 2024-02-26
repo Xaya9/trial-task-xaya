@@ -84,7 +84,6 @@ async function seedWidgets() {
       },
     });
 
-    console.log("Seed completed successfully");
   } catch (error) {
     console.error("Error seeding data:", error);
   } finally {
