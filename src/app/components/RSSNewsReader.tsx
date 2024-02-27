@@ -12,8 +12,8 @@ function RSSNewsReader() {
     <div>
       <Card className="w-[500px]">
         <CardHeader>
-          <CardTitle>RSSNewsReader</CardTitle>
-          <CardDescription>Display RSSNewsReader</CardDescription>
+          <CardTitle>RSS News Reader</CardTitle>
+          <CardDescription>Display News</CardDescription>
         </CardHeader>
         <CardContent>
           <p>A RSSNewsReader</p>

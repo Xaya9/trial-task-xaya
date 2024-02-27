@@ -12,7 +12,7 @@ function EmbedWidget() {
     <div>
       <Card className="w-[500px]">
         <CardHeader>
-          <CardTitle>EmbedWidget</CardTitle>
+          <CardTitle>Embed Widget</CardTitle>
           <CardDescription>Display EmbedWidget</CardDescription>
         </CardHeader>
         <CardContent>

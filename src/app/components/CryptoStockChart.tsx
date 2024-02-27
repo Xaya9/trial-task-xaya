@@ -71,7 +71,7 @@ function CryptoStockChart() {
     <div>
       <Card className="w-[500px]">
         <CardHeader>
-          <CardTitle>CryptoStockChart</CardTitle>
+          <CardTitle>Crypto Stock Chart</CardTitle>
         </CardHeader>
         <CardContent>
           <Line data={chartData} />

@@ -13,7 +13,7 @@ function CryptoPortfolioTracker() {
       <div>
       <Card className="w-[500px]">
         <CardHeader>
-          <CardTitle>CryptoPortfolioTracker</CardTitle>
+          <CardTitle>Crypto Portfolio Tracker</CardTitle>
           <CardDescription>Crypto Portfolio Tracker</CardDescription>
         </CardHeader>
         <CardContent>
