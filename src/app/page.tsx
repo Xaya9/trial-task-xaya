@@ -89,12 +89,12 @@ export default function Home() {
                         {chunk.map((item) => (
                           <Fragment key={item}>
                             {item === "1" && <AnalogClocks />}
-                            {item === "2" && <EmbedWidget />}
                             {item === "3" && <Quotes />}
                             {item === "4" && <RSSNewsReader />}
                             {item === "5" && <CryptoStockChart />}
                             {item === "6" && <CryptoPriceTicker />}
                             {item === "7" && <CryptoPortfolioTracker />}
+                            {item === "2" && <EmbedWidget />}
                           </Fragment>
                         ))}
                       </div>
