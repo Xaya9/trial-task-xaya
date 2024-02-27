@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRSSFeed } from "@/lib/backend";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { HiOutlineChevronDoubleDown } from "react-icons/hi2";
+import { ChevronDownIcon } from "@radix-ui/react-icons"
 
 interface FeedItem {
   title?: string;
@@ -96,7 +96,7 @@ function RSSNewsReader() {
             </ul>
             {displayedItems < feedItems.length && (
               <Button variant="outline" size="icon" onClick={handleLoadMore}>
-                <HiOutlineChevronDoubleDown className="h-4 w-4" />
+                <ChevronDownIcon className="h-4 w-4" />
               </Button>
             )}
           </div>
