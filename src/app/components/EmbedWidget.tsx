@@ -48,7 +48,7 @@ function EmbedWidget() {
 
   return (
     <div>
-      <Card className="w-[800px]">
+      <Card className="w-[500px]">
         <CardHeader>
           <CardTitle>Embed Pages</CardTitle>
         </CardHeader>
