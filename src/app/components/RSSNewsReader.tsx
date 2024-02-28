@@ -29,11 +29,9 @@ function RSSNewsReader({ user_id }: DetailsProps) {
     const fetchFeedForUrls = async () => {
       try {
         if (user_id) {
-          console.log(user_id);
           const layoutResponse = await axios.get(`/api/layout/${user_id}`);
           const layoutData = layoutResponse.data;
           const layoutId = layoutData.layout_id;
-          console.log(layoutId);
           const widgetResponse = await axios.get(
             `/api/layoutWidget/${layoutId}/${4}`
           );
@@ -94,7 +92,7 @@ function RSSNewsReader({ user_id }: DetailsProps) {
 
       toast({
         title: "Your RSS feed saved!",
-        description: "Your RSS feeds are added!",
+        description: "Your RSS feeds are removed!",
       });
     } catch (error) {
       console.error("Error saving RSS feed:", error);

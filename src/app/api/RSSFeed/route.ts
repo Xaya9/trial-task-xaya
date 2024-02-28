@@ -55,7 +55,6 @@ export async function PUT(req: any, res: any) {
       },
     });
 
-    console.log("Updated layoutWidget entry:", layoutWidget);
     return new NextResponse("LayoutWidget entry updated successfully", {
       status: 200,
     });
