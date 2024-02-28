@@ -1,17 +1,25 @@
-// RSSNewsReader.js
+"use client";
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRSSFeed } from "@/lib/backend";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronDownIcon } from "@radix-ui/react-icons"
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+import axios from "axios";
+import { toast } from "@/components/ui/use-toast";
+import { useAccount } from "wagmi";
 
 interface FeedItem {
   title?: string;
   link: string;
 }
 
-function RSSNewsReader() {
+interface DetailsProps {
+  user_id: number;
+}
+
+function RSSNewsReader({ user_id }: DetailsProps) {
+  const { address } = useAccount();
   const [feedUrls, setFeedUrls] = useState<string[]>([]);
   const [newUrl, setNewUrl] = useState<string>("");
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
@@ -20,27 +28,77 @@ function RSSNewsReader() {
   useEffect(() => {
     const fetchFeedForUrls = async () => {
       try {
-        const feedPromises = feedUrls.map((url) => getRSSFeed(url));
-        const feeds = await Promise.all(feedPromises);
-        const allItems = feeds.flat();
-        setFeedItems(allItems);
+        if (user_id) {
+          console.log(user_id);
+          const layoutResponse = await axios.get(`/api/layout/${user_id}`);
+          const layoutData = layoutResponse.data;
+          const layoutId = layoutData.layout_id;
+          console.log(layoutId);
+          const widgetResponse = await axios.get(
+            `/api/layoutWidget/${layoutId}/${4}`
+          );
+          const widgetData = widgetResponse.data;
+          const rssFeedUrls = widgetData.widget_config?.rss_feed_urls || [];
+          setFeedUrls(rssFeedUrls);
+          const feedPromises = rssFeedUrls.map((url: any) => getRSSFeed(url));
+          const feeds = await Promise.all(feedPromises);
+          const allItems = feeds.flat();
+          setFeedItems(allItems);
+        }
       } catch (error) {
         console.error("Error fetching RSS feed:", error);
       }
     };
 
     fetchFeedForUrls();
-  }, [feedUrls]);
+  }, [user_id]);
 
-  const handleAddUrl = () => {
-    setFeedUrls([...feedUrls, newUrl]);
-    setNewUrl("");
+  const handleAddUrl = async () => {
+    try {
+      const updatedFeedUrls = [...feedUrls, newUrl];
+      setFeedUrls(updatedFeedUrls);
+      setNewUrl("");
+
+      const widgetData = {
+        address: address,
+        widget_id: 4,
+        widget_config: {
+          rss_feed_urls: updatedFeedUrls,
+        },
+      };
+      await axios.put("/api/RSSFeed", widgetData);
+
+      toast({
+        title: "Your RSS feed saved!",
+        description: "Your RSS feeds are added!",
+      });
+    } catch (error) {
+      console.error("Error saving RSS feed:", error);
+    }
   };
 
-  const handleRemoveUrl = (index: number) => {
-    const updatedUrls = [...feedUrls];
-    updatedUrls.splice(index, 1);
-    setFeedUrls(updatedUrls);
+  const handleRemoveUrl = async (index: number) => {
+    try {
+      const updatedFeedUrls = [...feedUrls];
+      updatedFeedUrls.splice(index, 1);
+      setFeedUrls(updatedFeedUrls);
+
+      const widgetData = {
+        address: address,
+        widget_id: 4,
+        widget_config: {
+          rss_feed_urls: updatedFeedUrls,
+        },
+      };
+      await axios.put("/api/RSSFeed", widgetData);
+
+      toast({
+        title: "Your RSS feed saved!",
+        description: "Your RSS feeds are added!",
+      });
+    } catch (error) {
+      console.error("Error saving RSS feed:", error);
+    }
   };
 
   const handleLoadMore = () => {
@@ -71,7 +129,7 @@ function RSSNewsReader() {
             <p>RSS Feed URLs</p>
             <ul>
               {feedUrls.map((url, index) => (
-                <li key={index} className="flex items-center p-2">
+                <li key={index} className="flex items-center space-x-2 p-2">
                   <span>{url}</span>
                   <Button
                     variant="destructive"

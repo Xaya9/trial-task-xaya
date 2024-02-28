@@ -1,17 +1,23 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export async function GET(request: any, context: any) {
   try {
     const layout_id = parseInt(context.params.id);
+    const widget_id = parseInt(context.params.widgetId);
 
-    if (!layout_id) {
-      return new NextResponse("Missing layout", { status: 400 });
+    if (!layout_id || !widget_id) {
+      return new NextResponse("Missing layout and widget", { status: 400 });
     }
 
-    const layoutWidget = await prisma.layoutWidget.findMany({
+    const layoutWidget = await prisma.layoutWidget.findUnique({
       where: {
-        layout_id: layout_id,
+        layout_id_widget_id: {
+          layout_id: layout_id,
+          widget_id: widget_id,
+        },
       },
     });
 
@@ -21,7 +27,7 @@ export async function GET(request: any, context: any) {
       return new NextResponse("User not found", { status: 404 });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return new NextResponse("Something went wrong", { status: 400 });
   } finally {
     await prisma.$disconnect();

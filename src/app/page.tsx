@@ -71,7 +71,12 @@ export default function Home() {
       <main className="flex-1">
         {/* Top Bar */}
         <header className="bg-gray-900 text-black py-4 px-8 flex justify-end gap-3">
-          {user && <LayoutDetails user_id={user.user_id} onLayoutUpdate={handleLayoutUpdate} />}
+          {user && (
+            <LayoutDetails
+              user_id={user.user_id}
+              onLayoutUpdate={handleLayoutUpdate}
+            />
+          )}
           <Topbar />
         </header>
 
@@ -89,12 +94,14 @@ export default function Home() {
                         {chunk.map((item) => (
                           <Fragment key={item}>
                             {item === "1" && <AnalogClocks />}
+                            {item === "2" && <EmbedWidget />}
                             {item === "3" && <Quotes />}
-                            {item === "4" && <RSSNewsReader />}
+                            {item === "4" && (
+                              <RSSNewsReader user_id={user.user_id} />
+                            )}
                             {item === "5" && <CryptoStockChart />}
                             {item === "6" && <CryptoPriceTicker />}
                             {item === "7" && <CryptoPortfolioTracker />}
-                            {item === "2" && <EmbedWidget />}
                           </Fragment>
                         ))}
                       </div>
